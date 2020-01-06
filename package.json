@@ -4,9 +4,12 @@
   "description": "Automatic unit of measurement conversion for class attributes",
   "author": "Gianfranco Fois",
   "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "example": "ts-node-dev example/Main.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare" : "npm run build"
   },
   "repository": {
     "type": "git",
