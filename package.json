@@ -5,8 +5,18 @@
   "author": "Gianfranco Fois",
   "license": "MIT",
   "scripts": {
-    "example": "ts-node-dev example/Main.ts"
+    "example": "ts-node-dev example/Main.ts",
+    "build": "tsc"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GianfrancoFois/ts-unit-converter"
+  },
+  "bugs": {
+    "url": "https://github.com/GianfrancoFois/ts-unit-converter/issues"
+  },
+  "homepage": "https://github.com/GianfrancoFois/ts-unit-converter#readme",
+  "keywords": ["typescript", "units converter"],
   "devDependencies": {
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.4"
