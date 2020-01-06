@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": [
+      "es6", "dom"
+    ],
+    "declaration": true,
+    "removeComments": false,
+    "stripInternal": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "experimentalDecorators": true
+  },
+  "files": [
+    "src/**/*"
+  ]
+}
