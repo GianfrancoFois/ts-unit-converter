@@ -1,4 +1,4 @@
-import {ImperialUnits, MetricUnits, Unit, UnitSystem} from "./Measurement";
+import {ImperialUnits, MetricUnits, Unit} from "./Types";
 import {TSUnitConverter} from "./TSUnitConverter";
 
 export function convert(value: number,
@@ -6,11 +6,11 @@ export function convert(value: number,
                         units: { metric: MetricUnits, imperial: ImperialUnits }): number {
     const system = TSUnitConverter.getUnitSystem();
     const to = system === "metric" ? units.metric : units.imperial;
-    if(from === to){
+    if (from === to) {
         return value;
     }
 
-    if(converter[units.metric][units.imperial] == undefined){
+    if (converter[units.metric][units.imperial] == undefined) {
         throw `Cannot convert between ${units.metric} and ${units.imperial} or vice versa`;
     }
 
@@ -83,7 +83,7 @@ const converter = {
     },
     'grams': {
         'kilograms': (val) => val / 1000,
-        'pounds': (val) => val / 454,
+        'pounds': (val) => val / 453.59237,
         'ounces': (val) => val / 28.35,
     },
     'kilograms': {
@@ -93,7 +93,7 @@ const converter = {
     },
     'pounds': {
         'kilograms': (val) => val / 2.205,
-        'grams': (val) => val * 454,
+        'grams': (val) => val * 453.59237,
         'ounces': (val) => val * 16,
     },
     'ounces': {
@@ -102,10 +102,10 @@ const converter = {
         'pounds': (val) => val / 16,
     },
     'celsius': {
-        'fahrenheit': (val) => ((val * (9/5)) + 32),
+        'fahrenheit': (val) => ((val * (9 / 5)) + 32),
     },
     'fahrenheit': {
-        'celsius': (val) => ((val - 32) * (5/9)),
+        'celsius': (val) => ((val - 32) * (5 / 9)),
     },
 
 

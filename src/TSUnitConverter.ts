@@ -1,9 +1,10 @@
-import {ImperialUnits, MetricUnits, Unit, UnitSystem, UnitTypes} from "./Measurement";
+import {Unit, UnitSystem, UnitTypes} from "./Types";
 
 export class TSUnitConverter {
 
     private static _unitSystem: UnitSystem = "metric";
     private static _defaultSourceUnits: string[] = [];
+
     static setUnitSystem = (unitSystem: UnitSystem) => {
         TSUnitConverter._unitSystem = unitSystem;
     };

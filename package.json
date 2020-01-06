@@ -5,9 +5,7 @@
   "author": "Gianfranco Fois",
   "license": "MIT",
   "scripts": {
-    "run": "ts-node-dev ./src/index.ts",
-    "run:dev": "ts-node-dev ./src/index.ts --respawn --transpileOnly"
-
+    "example": "ts-node-dev example/Main.ts"
   },
   "devDependencies": {
     "ts-node-dev": "^1.0.0-pre.44",
