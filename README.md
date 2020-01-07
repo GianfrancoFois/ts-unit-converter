@@ -13,7 +13,7 @@ This is a simple library intended to deal with metric/imperial units conversion 
 To perform the conversion of a class property, use ```@Measurement ```. You can indicate the type of unit (see table below) for common pairs of units, or specify the imperial and metric units individually.
 
 Also, this library needs to know the ```sourceUnit``` of each property. Tipically this is the unit coming from an REST API or similar. This is the unit used in the setters and constructors.
-The ```sourceUnit``` can be ommited if you specify a default source unit for the unit type. To do so, use ```TSUnitConverter.setDefaultSourceUnit(type, unit)```.
+The ```sourceUnit``` can be ommited if you specify a default source unit for the unit type. To do so, use ```TSUnitConverter.setDefaultSourceUnit(type, unit)``` the earliest you can. Usually in main.ts or index.ts.
 
 If you want to set a property in the displayed units (for example, when taking user input), you have to wrap the set operations inside ```setInDisplayUnits()```.
 
