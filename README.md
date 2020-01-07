@@ -68,7 +68,7 @@ console.log('metric volume: ', obj.volume + " " + getUnit<MyClass>(obj, "volume"
 
 //set weight to 12 grams, using the unit displayed
 setInDisplayUnits(() => obj.weight = 12);
-console.log('metric weight: ', obj.weight + " " + getUnitAbbreviation<MyClass>(obj, "weight")); // 5443 g
+console.log('metric weight: ', obj.weight + " " + getUnitAbbreviation<MyClass>(obj, "weight")); // 12 g
 
 TSUnitConverter.setUnitSystem("imperial");
 console.log('imperial distance: ', obj.distance + " " + getUnit<MyClass>(obj, "distance")); // 3.1 miles
