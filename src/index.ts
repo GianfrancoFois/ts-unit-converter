@@ -1,3 +1,3 @@
 export { Unit, UnitTypes, ImperialUnits, MetricUnits, Config, TypedConfig, SpecificConfig, UnitSystem } from './Types' ;
-export { TSUnitConverter } from './TSUnitConverter';
+export { TSUnitConverter, setInDisplayUnits } from './TSUnitConverter';
 export { Measurement } from './Measurement'
