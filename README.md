@@ -8,11 +8,11 @@ This is a simple library intended to deal with metric/imperial units conversion 
 
 `npm install ts-unit-converter`
 
-###Usage
+### Usage
 
 To perform the conversion of a class property, use ```@Measurement ```. You can indicate the type of unit (see table below) for common pairs of units, or specify the imperial and metric units individually.
 
-Also, this library needs to know the** ```sourceUnit```** of each property. Tipically this is the unit coming from an REST API or similar. This is the unit used in the setters and constructors.
+Also, this library needs to know the ```sourceUnit``` of each property. Tipically this is the unit coming from an REST API or similar. This is the unit used in the setters and constructors.
 The ```sourceUnit``` can be ommited if you specify a default source unit for the unit type. To do so, use ```TSUnitConverter.setDefaultSourceUnit(type, unit)```.
 
 If you want to set a property in the displayed units (for example, when taking user input), you have to wrap the set operations inside ```setInDisplayUnits()```.
@@ -23,7 +23,7 @@ To change the **unit system**, use ```TSUnitConverter.setUnitSystem```. It can b
 
 When parsing an object with decorated properties, **all the properties  will be converted back to the source unit**, to keep consistency when sending data back to the API.
 
-###Example:
+### Example:
 
 ```typescript
 import {Measurement, TSUnitConverter, setInDisplayUnits} from 'ts-unit-converter';
@@ -82,7 +82,7 @@ console.log("JSON:", JSON.stringify(obj));
 
 ```
 
-###Unit types
+### Unit types
 
 | Type  | Metric  | Imperial  |
 | :------------ | :------------ | :------------ |
@@ -94,7 +94,8 @@ console.log("JSON:", JSON.stringify(obj));
 | **little-mass**   | grams  | ounces  |
 | **temperature**  | celsius  | fahrenheit  |
 
-###Supported units
+### Supported units
 
 **Metric:** "meters" | "kilometers" | "centimeters" | "kilograms" | "grams" | "liters" | "celsius"
+
 **Imperial:** "feet" | "yards" |"miles" | "inches" | "pounds" | "ounces" | "gallons" | "fahrenheit"
