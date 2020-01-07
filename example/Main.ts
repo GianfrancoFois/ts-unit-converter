@@ -1,14 +1,14 @@
-import {TSUnitConverter} from "../src/TSUnitConverter";
+import {TSUnitConverter} from "../src";
 import {MyClass} from "./MyClass";
 
 //lets say all the volumes without sourceUnit specified will be 'liters'
 TSUnitConverter.setDefaultSourceUnit('volume', "liters");
 
 const obj = new MyClass({
-    distance: 5000,
-    radius: "60",
-    volume: 180,
-    weight: 12
+    distance: 5000, //sourceUnit: meters
+    radius: "60", //sourceUnit: inches
+    volume: 180, //sourceUnit: liters
+    weight: 12 //sourceUnit: pounds
 });
 
 //by default the unit system is metric
@@ -23,3 +23,5 @@ console.log('imperial radius: ', obj.radius  + ' f'); // 5 feet
 console.log('imperial volume: ', obj.volume  + ' gal'); // 47 gallons
 console.log('imperial weight: ', obj.weight  + ' ounces'); // 192 ounces
 
+//The source units are preserved when converting to JSON
+console.log("JSON:", JSON.stringify(obj)); //{"distance":5000,"radius":60,"volume":180,"weight":12}

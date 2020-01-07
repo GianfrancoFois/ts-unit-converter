@@ -1,23 +1,30 @@
 import {ImperialUnits, MetricUnits, Unit} from "./Types";
 import {TSUnitConverter} from "./TSUnitConverter";
 
+/* converts a value from an original unit, to the metric or imperial unit provided, based on the configured system
+ (with TSUnitConverter.setUnitSystem()) */
 export function convert(value: number,
                         from: Unit,
-                        units: { metric: MetricUnits, imperial: ImperialUnits }): number {
+                        units: { metric: MetricUnits, imperial: ImperialUnits },
+                        // reverse parameter to convert back to sourceUnit
+                        reverse = false): number {
     const system = TSUnitConverter.getUnitSystem();
     const to = system === "metric" ? units.metric : units.imperial;
+
     if (from === to) {
         return value;
     }
 
-    if (converter[units.metric][units.imperial] == undefined) {
-        throw `Cannot convert between ${units.metric} and ${units.imperial} or vice versa`;
+    if ((!reverse && converter[from][to] == undefined) || (reverse && converter[to][from] == undefined)) {
+        throw `Cannot convert from ${reverse ? to : from} to ${reverse ? from : to}`;
     }
 
-    return converter[from][to](value);
+    return reverse ? converter[to][from](value) : converter[from][to](value);
 
 }
 
+// The outer object defines the unit 'from' and the inner defines the unit 'to'.
+// There should be always two combinations of the same units.
 const converter = {
     'meters': {
         'kilometers': (val) => val / 1000,

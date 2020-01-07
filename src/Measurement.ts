@@ -1,34 +1,28 @@
 import {convert} from "./Convert";
 import {TSUnitConverter} from "./TSUnitConverter";
-import {SpecificConfig, TypedConfig} from "./Types";
+import {Config, TypedConfig, Unit} from "./Types";
 import {UnitTypesDefaults} from "./UnitTypesDefaults";
 
-export function Measurement(config: TypedConfig | SpecificConfig) {
-    return function (target: Object, key: string | symbol) {
 
+/* @Measurement decorator factory function */
+export function Measurement(config: Config) {
+    return function (target: any, key: string | symbol) {
         let val: any = target[key];
 
         const getter = (): number => {
             if (val == null) return val;
-
             const isString = typeof val === "string";
+
+            /* tries to parse the string to number. If its not parsable, throw an error */
             if (isString) {
                 val = parseFloat(val);
             }
-
             if (isNaN(val)) throw "@Measurement must be used only with numbers or parsable strings";
 
-            let result;
-
-            if (isTypedConfig(config)) {
-                const sourceUnit = config.sourceUnit != undefined ? config.sourceUnit : TSUnitConverter.getDefaultSourceUnit(config.type);
-                if (sourceUnit == undefined) throw `You must specify a source unit in @Measurement or set a default source unit using TSUnitConverter.setDefaultSourceUnit(type, unit)`;
-                result = convert(val, sourceUnit, UnitTypesDefaults[config.type])
-            } else {
-                result = convert(val, config.sourceUnit, config);
-            }
-
-            return result;
+            const sourceUnit = getSourceUnit(config);
+            return isTypedConfig(config)
+                ? convert(val, sourceUnit, UnitTypesDefaults[config.type])
+                : convert(val, sourceUnit, config);
 
         };
 
@@ -43,10 +37,39 @@ export function Measurement(config: TypedConfig | SpecificConfig) {
             configurable: true,
         });
 
+        // This will be executed for each @Measurement decorator Typescript founds. So, we will be storing the
+        // previous toJSON function (can be undefined) and then adding the conversion mechanism for each property
+        // based on the config, in order to convert back to the sourceUnit.
+        // The conversion is the same, but the reverse parameter is added
+        const previousToJSON = target.toJSON;
+        target.toJSON = function () {
+            let obj = previousToJSON ? previousToJSON() : {};
+            if (obj === undefined) {
+                obj = {};
+            }
+            const sourceUnit = getSourceUnit(config);
+            obj[key] = isTypedConfig(config)
+                ? convert(target[key], sourceUnit, UnitTypesDefaults[config.type], true)
+                : convert(target[key], sourceUnit, config, true);
+            return obj;
+        }
+
     };
 }
 
+function getSourceUnit(config: Config): Unit {
+    if (isTypedConfig(config)) {
+        const sourceUnit = config.sourceUnit != undefined ? config.sourceUnit : TSUnitConverter.getDefaultSourceUnit(config.type);
+        /* if its still undefined or null, means that it was not in the config, nor in the defaults source units*/
+        if (sourceUnit == undefined) throw `You must specify a source unit in @Measurement or set a default source unit using TSUnitConverter.setDefaultSourceUnit(type, unit)`;
+        return sourceUnit;
+    } else {
+        return config.sourceUnit;
+    }
+}
 
-function isTypedConfig(config: TypedConfig | SpecificConfig): config is TypedConfig {
+// checks if the config provides a unit type
+function isTypedConfig(config: Config): config is TypedConfig {
     return (config as TypedConfig).type != undefined;
 }
+

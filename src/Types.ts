@@ -14,3 +14,5 @@ export type SpecificConfig = {
     imperial: ImperialUnits,
     sourceUnit: Unit
 };
+
+export type Config = TypedConfig | SpecificConfig;
