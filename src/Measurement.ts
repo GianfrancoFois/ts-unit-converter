@@ -2,12 +2,15 @@ import {convert} from "./Convert";
 import {GlobalFlags, TSUnitConverter} from "./TSUnitConverter";
 import {Config, TypedConfig, Unit} from "./Types";
 import {UnitTypesDefaults} from "./UnitTypesDefaults";
+import {PropertyConfigStore} from "./PropertyConfigStore";
 
 
 /* @Measurement decorator factory function */
 export function Measurement(config: Config) {
     return function (target: any, key: string | symbol) {
         let val: any = target[key];
+
+        PropertyConfigStore.setConfig(target, key, config);
 
         const getter = (): number => {
             if (val == null) return val;
@@ -76,7 +79,7 @@ function getSourceUnit(config: Config): Unit {
 }
 
 // checks if the config provides a unit type
-function isTypedConfig(config: Config): config is TypedConfig {
+export function isTypedConfig(config: Config): config is TypedConfig {
     return (config as TypedConfig).type != undefined;
 }
 

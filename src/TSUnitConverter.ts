@@ -18,6 +18,7 @@ export class TSUnitConverter {
     static getDefaultSourceUnit = (type: UnitTypes): Unit | undefined => {
         return TSUnitConverter._defaultSourceUnits[type];
     }
+
 }
 
 export class GlobalFlags {
@@ -32,3 +33,4 @@ export function setInDisplayUnits(func: () => any) {
         GlobalFlags.isSettingDisplayUnits = false;
     }
 }
+

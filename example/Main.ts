@@ -1,6 +1,6 @@
-import {TSUnitConverter} from "../src";
+import {getUnit, setInDisplayUnits, TSUnitConverter} from "../src";
 import {MyClass} from "./MyClass";
-import {setInDisplayUnits} from "../src/TSUnitConverter";
+import {getUnitAbbreviation} from "../src/PropertyConfigStore";
 
 //lets say all the volumes without sourceUnit specified will be 'liters'
 TSUnitConverter.setDefaultSourceUnit('volume', "liters");
@@ -31,4 +31,8 @@ setInDisplayUnits(() => obj.volume = 10);
 console.log('imperial volume: ', obj.volume  + ' gal'); // 10 gallons
 
 //The source units are preserved when converting to JSON
-console.log("JSON:", JSON.stringify(obj)); //{"distance":5000,"radius":60,"volume":180,"weight":12}
+console.log("JSON:", JSON.stringify(obj)); //{"distance":5000,"radius":60,"volume":37.85,"weight":0.0264}
+
+//Get the unit name and abbreviation for that property, in the displayed unit system.
+console.log("imperial radius unit abbreviation: ", getUnitAbbreviation<MyClass>(obj, "radius")); //ft
+console.log("imperial radius unit name: ", getUnit<MyClass>(obj, "radius")); //feet
