@@ -1,5 +1,5 @@
 import {convert} from "./Convert";
-import {TSUnitConverter} from "./TSUnitConverter";
+import {GlobalFlags, TSUnitConverter} from "./TSUnitConverter";
 import {Config, TypedConfig, Unit} from "./Types";
 import {UnitTypesDefaults} from "./UnitTypesDefaults";
 
@@ -27,7 +27,14 @@ export function Measurement(config: Config) {
         };
 
         const setter = (next) => {
-            val = next;
+            if(GlobalFlags.isSettingDisplayUnits){
+                const sourceUnit = getSourceUnit(config);
+                val = isTypedConfig(config)
+                    ? convert(next, sourceUnit, UnitTypesDefaults[config.type], true)
+                    : convert(next, sourceUnit, config, true);
+            } else {
+                val = next;
+            }
         };
 
         Object.defineProperty(target, key, {

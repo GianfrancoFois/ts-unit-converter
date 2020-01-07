@@ -19,3 +19,16 @@ export class TSUnitConverter {
         return TSUnitConverter._defaultSourceUnits[type];
     }
 }
+
+export class GlobalFlags {
+    static isSettingDisplayUnits = false;
+}
+
+export function setInDisplayUnits(func: () => any) {
+    try{
+        GlobalFlags.isSettingDisplayUnits = true;
+        func();
+    } finally {
+        GlobalFlags.isSettingDisplayUnits = false;
+    }
+}

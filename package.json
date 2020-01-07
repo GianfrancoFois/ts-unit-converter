@@ -1,6 +1,6 @@
 {
   "name": "ts-unit-converter",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Automatic unit of measurement conversion for class attributes",
   "author": "Gianfranco Fois",
   "license": "MIT",
