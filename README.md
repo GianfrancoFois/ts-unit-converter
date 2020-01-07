@@ -23,10 +23,15 @@ To change the **unit system**, use ```TSUnitConverter.setUnitSystem```. It can b
 
 When parsing an object with decorated properties, **all the properties  will be converted back to the source unit**, to keep consistency when sending data back to the API.
 
+
+**Unit names and abbreviations**
+
+You can get the unit name or abbreviation using ```getUnit<Class>(object, property)``` or ```getUnitAbbreviation<Class>(object, property)```. You have to specify the class as a type, and pass the instance and the property name as parameters.
+
 ### Example:
 
 ```typescript
-import {Measurement, TSUnitConverter, setInDisplayUnits} from 'ts-unit-converter';
+import {Measurement, TSUnitConverter, setInDisplayUnits, getUnitAbbreviation, getUnit} from 'ts-unit-converter';
 
 class MyClass {
 
@@ -57,28 +62,31 @@ const obj = new MyClass({
 });
 
 //by default the unit system is metric
-console.log('metric distance: ', obj.distance + ' km'); // 5 kilometers
-console.log('metric radius: ', obj.radius  + ' m'); // 1.524 meters
-console.log('metric volume: ', obj.volume  + ' l'); // 180 liters
+console.log('metric distance: ', obj.distance + " " + getUnit<MyClass>(obj, "distance")); // 5 kilometers
+console.log('metric radius: ', obj.radius + " " + getUnit<MyClass>(obj, "radius")); // 1.524 meters
+console.log('metric volume: ', obj.volume + " " + getUnit<MyClass>(obj, "volume")); // 180 liters
 
 //set weight to 12 grams, using the unit displayed
 setInDisplayUnits(() => obj.weight = 12);
-
-console.log('metric weight: ', obj.weight  + ' g'); // 5443 grams
+console.log('metric weight: ', obj.weight + " " + getUnitAbbreviation<MyClass>(obj, "weight")); // 5443 g
 
 TSUnitConverter.setUnitSystem("imperial");
-
-console.log('imperial distance: ', obj.distance + ' mi'); // 3.1 miles
-console.log('imperial radius: ', obj.radius  + ' f'); // 5 feet
-console.log('imperial weight: ', obj.weight  + ' ounces'); // 0.42 ounces
+console.log('imperial distance: ', obj.distance + " " + getUnit<MyClass>(obj, "distance")); // 3.1 miles
+console.log('imperial radius: ', obj.radius + " " + getUnit<MyClass>(obj, "radius")); // 5 feet
+console.log('imperial weight: ', obj.weight + " " + getUnit<MyClass>(obj, "weight")); // 0.42 ounces
 
 //set volume to 10 gallons
 setInDisplayUnits(() => obj.volume = 10);
-console.log('imperial volume: ', obj.volume  + ' gal'); // 10 gallons
+console.log('imperial volume: ', obj.volume + " " + getUnit<MyClass>(obj, "volume")); // 10 gallons
 
 //The source units are preserved when converting to JSON
-console.log("JSON:", JSON.stringify(obj));
+console.log("JSON:", JSON.stringify(obj)); 
 //{"distance":5000,"radius":60,"volume":37.85,"weight":0.0264}
+
+//Get the unit name and abbreviation for that property, in the displayed unit system.
+console.log("imperial radius unit abbreviation: ", getUnitAbbreviation<MyClass>(obj, "radius")); //ft
+console.log("imperial radius unit name: ", getUnit<MyClass>(obj, "radius")); //feet
+
 
 ```
 
