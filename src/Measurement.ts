@@ -4,65 +4,77 @@ import {Config, TypedConfig, Unit} from "./Types";
 import {UnitTypesDefaults} from "./UnitTypesDefaults";
 import {PropertyConfigStore} from "./PropertyConfigStore";
 
+/* we use a weakMap to hold a set of converted properties for each instance
+*  it is used in toJSON to set and convert those properties */
+const instancesMap = new WeakMap<any, Set<string>>();
 
 /* @Measurement decorator factory function */
-export function Measurement(config: Config) {
-    return function (target: any, key: string | symbol) {
-        let val: any = target[key];
+export function Measurement(config: Config): any {
+    return (target: any, propertyKey: string | symbol) => {
 
-        PropertyConfigStore.setConfig(target, key, config);
+        //We need to generate a new key for each property, to avoid infinite recursion in getters and setters
+        const key = Symbol();
 
-        const getter = (): number => {
-            if (val == null) return val;
-            const isString = typeof val === "string";
+        PropertyConfigStore.setConfig(target, propertyKey, config);
+
+        function getter(): number {
+            //@ts-ignore
+            const instance = this as any;
+            let value = instance[key];
+
+            if (value == null) return value;
+            const isString = typeof value === "string";
 
             /* tries to parse the string to number. If its not parsable, throw an error */
             if (isString) {
-                val = parseFloat(val);
+                value = parseFloat(value);
             }
-            if (isNaN(val)) throw "@Measurement must be used only with numbers or parsable strings";
+            if (isNaN(value)) throw "@Measurement must be used only with numbers or parsable strings";
 
             const sourceUnit = getSourceUnit(config);
             return isTypedConfig(config)
-                ? convert(val, sourceUnit, UnitTypesDefaults[config.type])
-                : convert(val, sourceUnit, config);
+                ? convert(value, sourceUnit, UnitTypesDefaults[config.type])
+                : convert(value, sourceUnit, config);
 
-        };
+        }
 
-        const setter = (next) => {
-            if(GlobalFlags.isSettingDisplayUnits){
+        function setter(next): void {
+            //@ts-ignore
+            const instance = this as any;
+
+            if (GlobalFlags.isSettingDisplayUnits) {
                 const sourceUnit = getSourceUnit(config);
-                val = isTypedConfig(config)
+                instance[key] = isTypedConfig(config)
                     ? convert(next, sourceUnit, UnitTypesDefaults[config.type], true)
                     : convert(next, sourceUnit, config, true);
             } else {
-                val = next;
+                instance[key] = next;
             }
-        };
 
-        Object.defineProperty(target, key, {
-            get: getter,
-            set: setter,
-            enumerable: true,
-            configurable: true,
-        });
+            //keys that have been converted. We need to retrieve them manually and do the conversion.
+            let keys = instancesMap.get(instance) ?? new Set<string>();
+            keys.add(propertyKey.toString());
+            instancesMap.set(instance, keys);
 
-        // This will be executed for each @Measurement decorator Typescript founds. So, we will be storing the
-        // previous toJSON function (can be undefined) and then adding the conversion mechanism for each property
-        // based on the config, in order to convert back to the sourceUnit.
-        // The conversion is the same, but the reverse parameter is added
-        const previousToJSON = target.toJSON;
-        target.toJSON = function () {
-            let obj = previousToJSON ? previousToJSON() : {};
-            if (obj === undefined) {
-                obj = {};
-            }
-            const sourceUnit = getSourceUnit(config);
-            obj[key] = isTypedConfig(config)
-                ? convert(target[key], sourceUnit, UnitTypesDefaults[config.type], true)
-                : convert(target[key], sourceUnit, config, true);
-            return obj;
+            instance.toJSON = function () {
+                const json = {...instance};
+                keys.forEach(key => {
+                    const config = PropertyConfigStore.getConfig(instance, key);
+                    if(config){
+                        const sourceUnit = getSourceUnit(config);
+                        json[key] = isTypedConfig(config)
+                            ? convert(instance[key], sourceUnit, UnitTypesDefaults[config.type], true)
+                            : convert(instance[key], sourceUnit, config, true);
+                    }
+                });
+                return json;
+            };
         }
+
+        return {
+            get: getter,
+            set: setter
+        };
 
     };
 }
