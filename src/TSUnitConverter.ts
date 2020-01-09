@@ -17,7 +17,13 @@ export class TSUnitConverter {
 
     static getDefaultSourceUnit = (type: UnitTypes): Unit | undefined => {
         return TSUnitConverter._defaultSourceUnits[type];
-    }
+    };
+
+    static setDefaultSourceUnits = (defaults: {type: UnitTypes, unit: Unit}[]) => {
+        defaults.forEach(def => {
+            TSUnitConverter._defaultSourceUnits[def.type] = def.unit;
+        });
+    };
 
 }
 

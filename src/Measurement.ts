@@ -41,9 +41,9 @@ export function Measurement(config: Config): any {
         function setter(next): void {
             //@ts-ignore
             const instance = this as any;
+            const sourceUnit = getSourceUnit(config);
 
             if (GlobalFlags.isSettingDisplayUnits) {
-                const sourceUnit = getSourceUnit(config);
                 instance[key] = isTypedConfig(config)
                     ? convert(next, sourceUnit, UnitTypesDefaults[config.type], true)
                     : convert(next, sourceUnit, config, true);
