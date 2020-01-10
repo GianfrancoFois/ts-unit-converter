@@ -108,9 +108,10 @@ console.log("imperial radius unit name: ", getUnit<MyClass>(obj, "radius")); //f
 | **mass**  | kilograms  | pounds  |
 | **little-mass**   | grams  | ounces  |
 | **temperature**  | celsius  | fahrenheit  |
+| **speed**  | kmh  | mph  |
 
 ### Supported units
 
-**Metric:** "meters" | "kilometers" | "centimeters" | "kilograms" | "grams" | "liters" | "celsius"
+**Metric:** "meters" | "kilometers" | "centimeters" | "kilograms" | "grams" | "liters" | "celsius" | "kmh"
 
-**Imperial:** "feet" | "yards" |"miles" | "inches" | "pounds" | "ounces" | "gallons" | "fahrenheit"
+**Imperial:** "feet" | "yards" |"miles" | "inches" | "pounds" | "ounces" | "gallons" | "fahrenheit" | "mph"

@@ -51,6 +51,8 @@ function getAbbreviation(unit: Unit | "") {
         case "ounces": return "oz";
         case "pounds": return "lb";
         case "yards": return "yd";
+        case "kmh": return "km/h";
+        case "mph": return "mph";
         default: return "";
     }
 }

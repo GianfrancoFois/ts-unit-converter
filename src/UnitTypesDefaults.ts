@@ -7,5 +7,6 @@ export const UnitTypesDefaults: {[key: string]: {metric: MetricUnits, imperial: 
     "volume": {metric: "liters", imperial: "gallons" },
     "mass": {metric: "kilograms", imperial: "pounds" },
     "little-mass": {metric: "grams", imperial: "ounces" },
-    "temperature": {metric: "celsius", imperial: "fahrenheit" }
+    "temperature": {metric: "celsius", imperial: "fahrenheit" },
+    "speed": {metric: "kmh", imperial: "mph"}
 };

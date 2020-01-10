@@ -114,6 +114,12 @@ export const converter = {
     'fahrenheit': {
         'celsius': (val) => ((val - 32) * (5 / 9)),
     },
+    'kmh': {
+        'mph':  (val) => val / 1.609
+    },
+    'mph': {
+        'kmh':  (val) => val * 1.609
+    }
 
 
 };
