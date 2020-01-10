@@ -2,6 +2,7 @@ import {Config, Unit} from "./Types";
 import {isTypedConfig} from "./Measurement";
 import {TSUnitConverter} from "./TSUnitConverter";
 import {UnitTypesDefaults} from "./UnitTypesDefaults";
+import {convert, converter} from "./Convert";
 
 export class PropertyConfigStore {
 
@@ -52,4 +53,10 @@ function getAbbreviation(unit: Unit | "") {
         case "yards": return "yd";
         default: return "";
     }
+}
+export function convertToUnit<T>(obj: T, property: keyof T, unit: Unit): number {
+    const config = PropertyConfigStore.getConfig(obj, property as string);
+    if(config == undefined) throw "Property '" + property + "' is not configured";
+    const displayUnit = getUnit<T>(obj, property);
+    return converter[displayUnit][unit](obj[property]);
 }

@@ -39,4 +39,3 @@ export function setInDisplayUnits(func: () => any) {
         GlobalFlags.isSettingDisplayUnits = false;
     }
 }
-

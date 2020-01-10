@@ -25,7 +25,7 @@ export function convert(value: number,
 
 // The outer object defines the unit 'from' and the inner defines the unit 'to'.
 // There should be always two combinations of the same units.
-const converter = {
+export const converter = {
     'meters': {
         'kilometers': (val) => val / 1000,
         'centimeters': (val) => val * 100,

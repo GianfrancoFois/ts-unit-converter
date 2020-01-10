@@ -1,5 +1,6 @@
 import {getUnit, getUnitAbbreviation, setInDisplayUnits, TSUnitConverter} from "../src";
 import {MyClass} from "./MyClass";
+import {convertToUnit} from "../src/PropertyConfigStore";
 
 //lets say all the volumes without sourceUnit specified will be 'liters'
 TSUnitConverter.setDefaultSourceUnit('volume', "liters");
@@ -27,6 +28,9 @@ console.log('imperial weight: ', obj.weight + " " + getUnit<MyClass>(obj, "weigh
 //set volume to 10 gallons
 setInDisplayUnits(() => obj.volume = 10);
 console.log('imperial volume: ', obj.volume + " " + getUnit<MyClass>(obj, "volume")); // 10 gallons
+
+//convert unit manually
+console.log("distance in yards: " + convertToUnit<MyClass>(obj, "distance", "yards"));
 
 //The source units are preserved when converting to JSON
 console.log("JSON:", JSON.stringify(obj)); //{"distance":5000,"radius":60,"volume":37.85,"weight":0.0264}

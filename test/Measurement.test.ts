@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import {Measurement, TSUnitConverter} from "../src";
+import {Measurement, setInDisplayUnits, TSUnitConverter} from "../src";
+import {convertToUnit} from "../src/PropertyConfigStore";
 
 describe('Measurement', () => {
     afterEach(() => {
@@ -31,6 +32,23 @@ describe('Measurement', () => {
         const object = new TestClass();
         object.longDistance = 5;
         expect(() => object.longDistance).to.throw();
+    });
+
+    it('should set in display units', () => {
+        const object = new TestClass();
+        TSUnitConverter.setUnitSystem("imperial");
+        setInDisplayUnits(() => {
+           object.distance = 32.8 //feet
+        });
+        TSUnitConverter.setUnitSystem('metric');
+        expect(object.distance).to.be.approximately(10, 0.1); //10 meters
+    });
+
+    it('should get unit in feet', () => {
+        const object = new TestClass();
+        object.distance = 5; //meters
+        const inFeet = convertToUnit<TestClass>(object, "distance", "feet");
+        expect(inFeet).to.be.approximately(16.4, 0.1);
     });
 
 });

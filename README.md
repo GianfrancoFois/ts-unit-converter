@@ -28,10 +28,14 @@ When parsing an object with decorated properties, **all the properties  will be 
 
 You can get the unit name or abbreviation using ```getUnit<Class>(object, property)``` or ```getUnitAbbreviation<Class>(object, property)```. You have to specify the class as a type, and pass the instance and the property name as parameters.
 
+**Manual conversion**
+
+You can convert a property manually using ```convertToUnit<Class>(object, property, unit)``` (see example).
+
 ### Example:
 
 ```typescript
-import {Measurement, TSUnitConverter, setInDisplayUnits, getUnitAbbreviation, getUnit} from 'ts-unit-converter';
+import {Measurement, TSUnitConverter, setInDisplayUnits, getUnitAbbreviation, getUnit, convertToUnit} from 'ts-unit-converter';
 
 class MyClass {
 
@@ -82,6 +86,9 @@ console.log('imperial volume: ', obj.volume + " " + getUnit<MyClass>(obj, "volum
 //The source units are preserved when converting to JSON
 console.log("JSON:", JSON.stringify(obj)); 
 //{"distance":5000,"radius":60,"volume":37.85,"weight":0.0264}
+
+//convert unit manually
+console.log("distance in yards: " + convertToUnit<MyClass>(obj, "distance", "yards"));
 
 //Get the unit name and abbreviation for that property, in the displayed unit system.
 console.log("imperial radius unit abbreviation: ", getUnitAbbreviation<MyClass>(obj, "radius")); //ft
