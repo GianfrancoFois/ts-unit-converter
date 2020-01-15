@@ -56,9 +56,11 @@ function getAbbreviation(unit: Unit | "") {
         default: return "";
     }
 }
-export function convertToUnit<T>(obj: T, property: keyof T, unit: Unit): number {
+export function convertToUnit<T>(obj: T, property: keyof T, unit: Unit): number | undefined  {
+    if(obj == null || obj[property] == null) return undefined;
     const config = PropertyConfigStore.getConfig(obj, property as string);
     if(config == undefined) throw "Property '" + property + "' is not configured";
     const displayUnit = getUnit<T>(obj, property);
+    if(displayUnit === unit) return obj[property] as any;
     return converter[displayUnit][unit](obj[property]);
 }
