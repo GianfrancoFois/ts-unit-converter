@@ -47,8 +47,20 @@ describe('Measurement', () => {
     it('should get unit in feet', () => {
         const object = new TestClass();
         object.distance = 5; //meters
+        TSUnitConverter.setUnitSystem('imperial');
         const inFeet = convertToUnit<TestClass>(object, "distance", "feet");
         expect(inFeet).to.be.approximately(16.4, 0.1);
+    });
+
+    it('should keep source units in JSON.stringify', () => {
+        const object = new TestClass();
+        object.distance = 5; //meters
+        TSUnitConverter.setUnitSystem('metric');
+        setInDisplayUnits(() => object.volume = 1); //1 liter
+        TSUnitConverter.setUnitSystem('imperial');
+        const parsed = JSON.parse(JSON.stringify(object));
+        expect(parsed.distance).to.be.equal(5);
+        expect(parsed.volume).to.be.approximately(0.26, 0.01);
     });
 
 });
@@ -60,4 +72,7 @@ export class TestClass {
 
     @Measurement({type: "long-distance"})
     longDistance: number;
+
+    @Measurement({type: "volume", sourceUnit: 'gallons'})
+    volume: number;
 }

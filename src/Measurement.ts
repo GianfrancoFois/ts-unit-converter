@@ -4,10 +4,6 @@ import {Config, TypedConfig, Unit} from "./Types";
 import {UnitTypesDefaults} from "./UnitTypesDefaults";
 import {PropertyConfigStore} from "./PropertyConfigStore";
 
-/* we use a weakMap to hold a set of converted properties for each instance
-*  it is used in toJSON to set and convert those properties */
-const instancesMap = new WeakMap<any, Set<string>>();
-
 /* @Measurement decorator factory function */
 export function Measurement(config: Config): any {
     return (target: any, propertyKey: string | symbol) => {
@@ -51,14 +47,19 @@ export function Measurement(config: Config): any {
                 instance[key] = next;
             }
 
-            //keys that have been converted. We need to retrieve them manually and do the conversion.
-            let keys = instancesMap.get(instance) ?? new Set<string>();
-            keys.add(propertyKey.toString());
-            instancesMap.set(instance, keys);
+            //keys that have been converted. We need to retrieve them and do the conversion.
+            if(instance.__convertedProperties == null){
+                Object.defineProperty(instance, '__convertedProperties', {
+                    value: new Set<string>(),
+                    enumerable: false,
+                    writable: true
+                });
+            }
+            instance.__convertedProperties.add(propertyKey.toString());
 
             instance.toJSON = function () {
                 const json = {...instance};
-                keys.forEach(key => {
+                instance.__convertedProperties.forEach(key => {
                     const config = PropertyConfigStore.getConfig(instance, key);
                     if(config){
                         const sourceUnit = getSourceUnit(config);

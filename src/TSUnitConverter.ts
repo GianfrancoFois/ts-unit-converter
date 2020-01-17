@@ -1,7 +1,6 @@
 import {Unit, UnitSystem, UnitTypes} from "./Types";
 
 export class TSUnitConverter {
-
     private static _unitSystem: UnitSystem = "metric";
     private static _defaultSourceUnits: string[] = [];
 
