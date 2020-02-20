@@ -1,7 +1,7 @@
 {
-  "name": "ts-unit-converter",
-  "version": "1.1.7",
-  "description": "Automatic unit of measurement conversion for class attributes",
+  "name": "classmapper",
+  "version": "1.0.0",
+  "description": "Typescript & Javascript class-to-class mapper. Intended for entity to DTO conversion",
   "author": "Gianfranco Fois",
   "license": "MIT",
   "main": "dist/index.js",
@@ -15,15 +15,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GianfrancoFois/ts-unit-converter"
+    "url": "git+https://github.com/GianfrancoFois/classmapper"
   },
   "bugs": {
-    "url": "https://github.com/GianfrancoFois/ts-unit-converter/issues"
+    "url": "https://github.com/GianfrancoFois/classmapper/issues"
   },
-  "homepage": "https://github.com/GianfrancoFois/ts-unit-converter#readme",
+  "homepage": "https://github.com/GianfrancoFois/classmapper#readme",
   "keywords": [
     "typescript",
-    "units converter"
+    "mapper",
+    "class",
+    "dto"
   ],
   "devDependencies": {
     "@types/chai": "^4.2.7",
