@@ -3,16 +3,15 @@
     "target": "es5",
     "module": "commonjs",
     "lib": [
-      "es6", "dom", "ES2016.Array.Include"
+      "es6", "dom"
     ],
     "outDir": "./dist",
     "declaration": true,
     "removeComments": false,
     "stripInternal": true,
     "noImplicitThis": true,
-    "strictNullChecks": false,
-    "experimentalDecorators": true,
-    "useDefineForClassFields": true
+    "strictNullChecks": true,
+    "experimentalDecorators": true
   },
   "include": [
     "src"
